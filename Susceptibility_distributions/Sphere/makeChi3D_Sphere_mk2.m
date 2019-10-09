@@ -6,8 +6,8 @@ function [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere_mk2(SizeX, Si
 %           chi_int= water= 9.05ppm= 9.05e-6
 %           chi_extern= air= 0.36ppm= 3.6e-7
 %           
-% [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere(SizeX, SizeY, SizeZ,  FOVx,  FOVy,  FOVz,    r, chi_int, chi_ext, Kugel_x0, Kugel_y0, Kugel_z0);
-% [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere(  128,   128,   128, 0.256, 0.256, 0.256, 0.01, 9.05e-6,  3.6e-7,        0,        0,        0);
+% [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere_mk2(SizeX, SizeY, SizeZ,  FOVx,  FOVy,  FOVz,    r, chi_int, chi_ext, Kugel_x0, Kugel_y0, Kugel_z0);
+% [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere_mk2(  128,   128,   128, 0.256, 0.256, 0.256, 0.01, 9.05e-6,  3.6e-7,        0,        0,        0);
 
 % clear
 %% Koordinaten erstellen
@@ -29,6 +29,7 @@ function [chi ParameterStruct x_pos y_pos z_pos]= makeChi3D_Sphere_mk2(SizeX, Si
 % FOVy = 0.3; %0.25;%m
 % FOVz = 0.3; %0.25;%m
 
+Resolution_mm = [FOVy/SizeY; FOVx/SizeX; FOVz/SizeZ].*1000;
 %Koordinaten erstellen...
 [x, y, z]= meshgrid(-FOVy/2: FOVy/SizeY :FOVy/2 - FOVy/SizeY, -FOVx/2:FOVx/SizeX:FOVx/2 - FOVx/SizeX, -FOVz/2:FOVz/SizeZ:FOVz/2 - FOVz/SizeZ );
 
@@ -83,40 +84,40 @@ t=toc;
 disp(['DONE! (Time needed: ' ,num2str(t), 's.)']);
 disp('---------------------------------------------------------------------');
 %% 3.) ParameterStruct erstellen.
-ParameterStruct.FOV_x= FOVx;
-ParameterStruct.FOV_y= FOVy;
-ParameterStruct.FOV_z= FOVz;
-
-ParameterStruct.Size_x= SizeX;
-ParameterStruct.Size_y= SizeY;
-ParameterStruct.Size_z= SizeZ;
-
-ParameterStruct.Res_x= FOVx/SizeX;
-ParameterStruct.Res_y= FOVy/SizeY;
-ParameterStruct.Res_z= FOVz/SizeZ;
-
-
-ParameterStruct.MR_invisible(1)= chi_ext;     %Suszeptibilit‰t des Auﬂenbereichs
+% ParameterStruct.FOV_x= FOVx;
+% ParameterStruct.FOV_y= FOVy;
+% ParameterStruct.FOV_z= FOVz;
+% 
+% ParameterStruct.Size_x= SizeX;
+% ParameterStruct.Size_y= SizeY;
+% ParameterStruct.Size_z= SizeZ;
+% 
+% ParameterStruct.Res_x= FOVx/SizeX;
+% ParameterStruct.Res_y= FOVy/SizeY;
+% ParameterStruct.Res_z= FOVz/SizeZ;
+%
+% ParameterStruct.MR_invisible(1)= chi_ext;     %Suszeptibilit‰t des Auﬂenbereichs
+ParameterStruct = prep_ParameterStruct(chi, Resolution_mm);
 
 %% THIS IS A KLUDGE: PLEASE FIX IT!
 clear x y z
 
-if mod(ParameterStruct.Size_x, 2) == 0
-    [x_pos] = [(-ParameterStruct.FOV_x/2):(ParameterStruct.Res_x):(ParameterStruct.FOV_x/2-ParameterStruct.Res_x)];
+if mod(ParameterStruct.Size_x_Chi, 2) == 0
+    [x_pos] = [(-ParameterStruct.FOV_x_Chi/2):(ParameterStruct.Res_x):(ParameterStruct.FOV_x_Chi/2-ParameterStruct.Res_x)];
 else
-    [x_pos] = [(-(ParameterStruct.FOV_x - ParameterStruct.Res_x)/2):(ParameterStruct.Res_x):((ParameterStruct.FOV_x - ParameterStruct.Res_x)/2)];
+    [x_pos] = [(-(ParameterStruct.FOV_x_Chi - ParameterStruct.Res_x)/2):(ParameterStruct.Res_x):((ParameterStruct.FOV_x_Chi - ParameterStruct.Res_x)/2)];
 end
 
-if mod(ParameterStruct.Size_y, 2) == 0
-    [y_pos] = [(-ParameterStruct.FOV_y/2):(ParameterStruct.Res_y):(ParameterStruct.FOV_y/2-ParameterStruct.Res_y)];
+if mod(ParameterStruct.Size_y_Chi, 2) == 0
+    [y_pos] = [(-ParameterStruct.FOV_y_Chi/2):(ParameterStruct.Res_y):(ParameterStruct.FOV_y_Chi/2-ParameterStruct.Res_y)];
 else
-    [y_pos] = [(-(ParameterStruct.FOV_y - ParameterStruct.Res_y)/2):(ParameterStruct.Res_y):((ParameterStruct.FOV_y - ParameterStruct.Res_y)/2)];
+    [y_pos] = [(-(ParameterStruct.FOV_y_Chi - ParameterStruct.Res_y)/2):(ParameterStruct.Res_y):((ParameterStruct.FOV_y_Chi - ParameterStruct.Res_y)/2)];
 end
 
-if mod(ParameterStruct.Size_z, 2) == 0
-    [z_pos] = [(-ParameterStruct.FOV_z/2):(ParameterStruct.Res_z):(ParameterStruct.FOV_z/2-ParameterStruct.Res_z)];
+if mod(ParameterStruct.Size_z_Chi, 2) == 0
+    [z_pos] = [(-ParameterStruct.FOV_z_Chi/2):(ParameterStruct.Res_z):(ParameterStruct.FOV_z_Chi/2-ParameterStruct.Res_z)];
 else
-    [z_pos] = [(-(ParameterStruct.FOV_z - ParameterStruct.Res_z)/2):(ParameterStruct.Res_z):((ParameterStruct.FOV_z - ParameterStruct.Res_z)/2)];
+    [z_pos] = [(-(ParameterStruct.FOV_z_Chi - ParameterStruct.Res_z)/2):(ParameterStruct.Res_z):((ParameterStruct.FOV_z_Chi - ParameterStruct.Res_z)/2)];
 end
 
 
