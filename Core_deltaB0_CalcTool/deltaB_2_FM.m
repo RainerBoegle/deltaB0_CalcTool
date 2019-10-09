@@ -56,7 +56,7 @@ function FieldMap = deltaB_2_FM(ChiSize_deltaB,ParameterStruct,Chi) %WIP: ShimVa
 %Example Call:
 %               FieldMap = deltaB_2_FM(ChiSize_deltaB,ParameterStruct,Chi)
 %
-%Author: Rainer B�gle (Rainer.Boegle@googlemail.com)
+%Author: Rainer Boegle (Rainer.Boegle@googlemail.com)
 %Last Change: 2010.04.06 (Minor Debugging)
 
 %% 1.)

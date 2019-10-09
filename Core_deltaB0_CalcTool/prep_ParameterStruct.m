@@ -36,7 +36,7 @@ function ParameterStruct = prep_ParameterStruct(Chi, Resolution_mm)
 %                   ParameterStruct = prep_ParameterStruct(Chi, Resolution_mm);
 %                   ParameterStruct = prep_ParameterStruct(Chi, [1 1 1]);  %Chi was determined from T1 with 1x1x1 mm resolution
 %
-%Author: Rainer B�gle (Rainer.Boegle@googlemail.com)
+%Author: Rainer Boegle (Rainer.Boegle@googlemail.com)
 %Last Change: 2010.04.01
 
 ParameterStruct.Res_x = Resolution_mm(2)./1000;
